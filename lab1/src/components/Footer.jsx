@@ -1,9 +1,15 @@
-function Footer({ companyName }) {
+function Footer({ companyName = "HOTELA" }) {
   return (
     <footer className="container">    
       <section className="footer-cta">
         <section className="footer-cta__content">
-          <img src="img/lightning-icon.png" alt="" className="footer-cta__icon rotate" aria-hidden="true" />
+          {}
+          <img 
+            src="/img/lightning-icon.png" 
+            alt="" 
+            className="footer-cta__icon rotate" 
+            aria-hidden="true" 
+          />
               
           <h2 className="footer-cta__title">
             Начните <br />
@@ -15,14 +21,18 @@ function Footer({ companyName }) {
             {companyName} поможет оптимизировать работу ресепшн, увеличить средний чек и подарить вашим гостям ещё больше комфорта.
           </p>
               
-          <button type="button" className="footer-cta__button pulse-scale">
+          <button 
+            type="button" 
+            className="footer-cta__button pulse-scale"
+            onClick={() => alert("Спасибо за интерес! Скоро мы свяжемся с вами.")}
+          >
             Подключиться сейчас
           </button>
         </section>
       </section>
       
       <p className="site-footer__copyright">
-        © 2022 {companyName}. Все права защищены.
+        © 2026 {companyName}. Все права защищены.
       </p>
     </footer> 
   );
