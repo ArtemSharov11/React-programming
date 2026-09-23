@@ -1051,3 +1051,210 @@ p {
 .tariff-card--addons .tariff-card__period {
     color: rgba(255, 255, 255, 0.8);
 }
+
+
+
+
+:root {
+    --bg-main: #FFFFFF;
+    --bg-secondary: #F5F5F5;
+    --text-color: #000000;
+    --card-bg: #FFFFFF;
+    --border-color: #E5E5E5;
+}
+
+body.dark-theme {
+    --bg-main: #121212;
+    --bg-secondary: #1E1E1E;
+    --text-color: #F1F1F1;
+    --card-bg: #242424;
+    --border-color: #333333;
+    
+    background-color: var(--bg-main) !important;
+    color: var(--text-color) !important;
+}
+
+body.dark-theme .container,
+body.dark-theme .header,
+body.dark-theme .features-section,
+body.dark-theme .brands-section,
+body.dark-theme .content-cards-section,
+body.dark-theme .side-menu {
+    background-color: var(--bg-main) !important;
+    color: var(--text-color) !important;
+}
+
+body.dark-theme .features-card,
+body.dark-theme .tariff-card--basic,
+body.dark-theme .service-card,
+body.dark-theme .interactive-modal__dialog {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+body.dark-theme .text-h2,
+body.dark-theme .text-body-34,
+body.dark-theme .text-body-41,
+body.dark-theme .text-pricing-nav,
+body.dark-theme .side-menu__nav a,
+body.dark-theme .page-nav a {
+    color: #FFFFFF !important;
+}
+
+body.dark-theme .phone-card__image-wrapper,
+body.dark-theme .content-card__image-wrapper,
+body.dark-theme .phones-showcase__background,
+body.dark-theme .review-block,
+body.dark-theme .admin-section {
+    background-color: var(--bg-secondary) !important;
+}
+
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.settings-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Переключатель языка (слитная плашка) */
+.lang-switch {
+    display: inline-flex;
+    background: #f1f1f1;
+    border-radius: 20px;
+    padding: 3px;
+    gap: 2px;
+}
+
+.lang-btn {
+    border: none;
+    background: transparent;
+    padding: 5px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #555;
+}
+
+.lang-btn.active {
+    background: #9EF01A;
+    color: #000;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Кнопки темы и сброса */
+.theme-toggle-btn, .reset-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #e5e5e5;
+    background: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover, .reset-btn:hover {
+    background: #f5f5f5;
+    transform: translateY(-1px);
+}
+
+.header-divider {
+    width: 1px;
+    height: 24px;
+    background: #e0e0e0;
+}
+
+#user-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+}
+
+.user-avatar-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f1f1;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.user-avatar-btn:hover {
+    background: #e8e8e8;
+}
+
+.admin-badge-link {
+    display: inline-flex;
+    align-items: center;
+    background: #000000;
+    color: #9EF01A !important;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: opacity 0.2s ease;
+}
+
+.admin-badge-link:hover {
+    opacity: 0.85;
+}
+
+.btn-logout {
+    background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+    background: #ff4d4d;
+    color: #fff;
+    border-color: #ff4d4d;
+}
+
+body.dark-theme .lang-switch {
+    background: #2a2a2a;
+}
+body.dark-theme .lang-btn {
+    color: #aaa;
+}
+body.dark-theme .lang-btn.active {
+    background: #9EF01A;
+    color: #000;
+}
+body.dark-theme .theme-toggle-btn,
+body.dark-theme .reset-btn {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #fff;
+}
+body.dark-theme .user-avatar-btn {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #fff;
+}
+body.dark-theme .header-divider {
+    background: #444;
+}
