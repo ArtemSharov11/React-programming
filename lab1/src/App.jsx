@@ -1,39 +1,22 @@
-import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-
-import './animation.css';
-import './index3.css';
-import './tablet.css';
-import './phone.css';
-
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
-
-import initialServices from './data/services.json';
+import CatalogPage from './pages/CatalogPage';
+import CartPage from './pages/CartPage';
+import AdminPage from './pages/AdminPage'; 
 
 function App() {
-  const companyName = "Hoteza Web";
-
-  const [services, setServices] = useState(initialServices);
-  const [cart, setCart] = useState([]);
-
-  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
   return (
     <div>
-      <Header companyName={companyName} cartCount={cartCount} />
-
+      <Header />
       <Routes>
-        {}
         <Route path="/" element={<HomePage />} />
-
-        {}
-        <Route path="/catalog" element={<div className="container" style={{ padding: '4rem 1rem' }}><h2>Каталог в разработке...</h2></div>} />
-        <Route path="/cart" element={<div className="container" style={{ padding: '4rem 1rem' }}><h2>Корзина в разработке...</h2></div>} />
+        <Route path="/catalog" element={<CatalogPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
-
-      <Footer companyName={companyName} />
+      <Footer companyName="Hoteza Web" />
     </div>
   );
 }
