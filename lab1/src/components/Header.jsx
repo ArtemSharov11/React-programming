@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+
+
 import Avatar from '@mui/material/Avatar';
+import Badge from '@mui/material/Badge';
 
 export default function Header() {
   const { t, i18n } = useTranslation();
@@ -58,8 +61,19 @@ export default function Header() {
                 to="/cart"
                 style={{ textDecoration: 'none', color: '#000', fontWeight: '500', display: 'flex', alignItems: 'center' }}
               >
-                {t('nav-cart')}
-                <span className="interactive-counter">{cartCount}</span>
+                <Badge 
+                  badgeContent={cartCount} 
+                  color="success" 
+                  showZero
+                  sx={{
+                    '& .MuiBadge-badge': {
+                      right: -4,
+                      top: 7      
+                    }
+                  }}
+                >
+                  <span style={{ paddingRight: '8px' }}>{t('nav-cart')}</span>
+                </Badge>
               </Link>
               <Link to="/admin" className="cat-btn" style={{ fontSize: '0.85rem' }}>
                 {t('nav-admin')}
