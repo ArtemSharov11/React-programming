@@ -11,12 +11,10 @@ export default function CartPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Берем элементы корзины из Redux-хранилища
   const { items, error } = useSelector((state) => state.cart);
   const [localItems, setLocalItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Синхронизация с сервером при загрузке (если сервер запущен)
   const fetchServerCart = async () => {
     try {
       setIsLoading(true);
@@ -25,7 +23,6 @@ export default function CartPage() {
         const data = await res.json();
         setLocalItems(data);
       } else {
-        // Если сервер недоступен, берем данные из Redux
         setLocalItems(items);
       }
     } catch {
@@ -39,18 +36,14 @@ export default function CartPage() {
     fetchServerCart();
   }, [items]);
 
-  // Расчет итоговой суммы
   const displayItems = localItems.length ? localItems : items;
   const totalPrice = displayItems.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
 
-  // Изменение количества товара
   const handleUpdateQty = async (id, newQty) => {
     if (newQty < 1) return;
 
-    // Обновляем в Redux
     dispatch(updateQuantity({ id, quantity: newQty }));
 
-    // Обновляем на сервере json-server
     try {
       await fetch(`${API_URL}/cart/${id}`, {
         method: 'PATCH',
@@ -63,15 +56,12 @@ export default function CartPage() {
     }
   };
 
-  // Удаление товара с подтверждением
   const handleRemoveItem = async (id) => {
     const confirmed = window.confirm("Удалить услугу из корзины?");
     if (!confirmed) return;
 
-    // Удаляем из Redux
     dispatch(removeFromCart(id));
 
-    // Удаляем с сервера
     try {
       await fetch(`${API_URL}/cart/${id}`, { method: 'DELETE' });
       fetchServerCart();
@@ -80,21 +70,17 @@ export default function CartPage() {
     }
   };
 
-  // Оформление заказа (как в cart.js)
   const handleCheckout = async () => {
     if (displayItems.length === 0) {
-      alert("Корзина пуста.");
+      alert(t('cart-empty'));
       return;
     }
 
-    // Проверяем пользователя в localStorage (совместимо со старым session.js)
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     
-    // Если требуется авторизация, как в вашем cart.js
     if (!currentUser) {
       const confirmAuth = window.confirm("Для оформления заказа рекомендуется войти в систему. Перейти к авторизации?");
       if (confirmAuth) {
-        // Если есть роут авторизации
         navigate('/auth');
         return;
       }
@@ -115,7 +101,6 @@ export default function CartPage() {
       });
 
       if (orderResponse.ok) {
-        // Очищаем товары на бэкенде
         for (const item of displayItems) {
           await fetch(`${API_URL}/cart/${item.id}`, { method: 'DELETE' });
         }
@@ -124,16 +109,16 @@ export default function CartPage() {
       console.log('Сервер заказов недоступен, очищаем локально:', err);
     }
 
-    // Очищаем Redux и локальный стейт
     dispatch(clearCart());
     setLocalItems([]);
-    alert("Покупка успешно оформлена. Корзина очищена.");
+    
+    alert(t('order-success')); 
   };
 
   return (
     <main className="container" style={{ minHeight: '75vh' }}>
       <section className="catalog-intro fade-in">
-        <h1 className="text-h2">Ваша корзина</h1>
+        <h1 className="text-h2">{t('cart-title')}</h1>
         <p className="text-body-gray-30">Управляйте вашими заказами и услугами</p>
       </section>
 
@@ -143,7 +128,6 @@ export default function CartPage() {
         </div>
       )}
 
-      {/* Блок итоговой суммы и кнопки оформления */}
       <div className="cart-summary container" style={{ marginBottom: '3rem' }}>
         <div 
           id="cart-total-block" 
@@ -159,7 +143,7 @@ export default function CartPage() {
           }}
         >
           <div>
-            <p className="text-body-gray-30">Общая стоимость:</p>
+            <p className="text-body-gray-30">{t('cart-total')}</p>
             <span id="total-price" className="text-banner" style={{ fontSize: '3rem', color: '#000' }}>
               ${totalPrice}
             </span>
@@ -172,22 +156,22 @@ export default function CartPage() {
             className="footer-cta__button" 
             style={{ padding: '1rem 3rem', fontSize: '1.2rem', cursor: 'pointer', border: 'none' }}
           >
-            Оформить покупку
+            {t('cart-checkout')}
           </button>
         </div>
       </div>
 
-      {/* Сетка товаров в корзине */}
       <div id="catalog-container" className="catalog-grid container">
         {displayItems.length === 0 ? (
           <div style={{ width: '100%', textAlign: 'center', padding: '3rem 0', gridColumn: '1 / -1' }}>
-            <h2 className="text-h2">Корзина пуста</h2>
+            <h2 className="text-h2">{t('cart-empty')}</h2>
+            
             <Link 
               to="/catalog" 
               className="cat-btn active" 
               style={{ marginTop: '1.5rem', display: 'inline-block', textDecoration: 'none' }}
             >
-              Перейти в каталог
+              {t('nav-catalog')}
             </Link>
           </div>
         ) : (
@@ -224,7 +208,7 @@ export default function CartPage() {
                   className="cat-btn" 
                   style={{ background: '#ff4d4d', color: '#fff', border: 'none' }}
                 >
-                  Удалить
+                  {t('delete')}
                 </button>
               </div>
             </article>

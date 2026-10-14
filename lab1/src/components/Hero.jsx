@@ -1,10 +1,16 @@
-function Hero({ title }) {
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
+function Hero() {
+  const { t } = useTranslation();
+
   return (
     <section className="core-section">
       <section className="core-section__content">
         <section className="hero-text fade-in">
           <h1 className="hero-text__title">
-            {title}
+            {}
+            {t('catalog-subtitle')}
           </h1>
         </section>
         

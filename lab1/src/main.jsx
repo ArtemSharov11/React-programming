@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { store } from './store/store.js';
 import './i18n.js';
 
-import './index.css';
 import './index3.css';
 import './animation.css';
 import './phone.css';

@@ -5,12 +5,14 @@ import HomePage from './pages/HomePage';
 import CatalogPage from './pages/CatalogPage';
 import CartPage from './pages/CartPage';
 import AdminPage from './pages/AdminPage'; 
+import Page404 from './pages/404';
 
 function App() {
   return (
     <div>
       <Header />
       <Routes>
+        <Route path="*" element={<Page404 />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/cart" element={<CartPage />} />

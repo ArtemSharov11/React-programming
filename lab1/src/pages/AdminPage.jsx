@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { addService, updateService, deleteService } from "../store/servicesSlice";
 import "../Admin.css";
 
-// Правила валидации точь-в-точь из оригинального admin.js
 const serviceRules = {
   name: {
     validate: (value) => value.trim().length >= 3 && value.trim().length <= 80,
@@ -54,7 +53,6 @@ export default function AdminPage() {
   const [formData, setFormData] = useState(initialForm);
   const [touched, setTouched] = useState({});
 
-  // Локальные отзывы для соответствия правому блоку admin.html
   const [reviews, setReviews] = useState([
     { id: "1", userName: "Александр", userId: "101", serviceName: "Завтрак в номер", serviceId: "1", text: "Отличный круассан, доставили горячим!" },
     { id: "2", userName: "Мария", userId: "102", serviceName: "Тайский массаж", serviceId: "2", text: "Прекрасный мастер, рекомендую!" }
@@ -62,7 +60,6 @@ export default function AdminPage() {
   const [filterId, setFilterId] = useState("");
   const [activeReviewFilter, setActiveReviewFilter] = useState({ type: "", value: "" });
 
-  // Валидация полей
   const errors = useMemo(() => {
     const errs = {};
     Object.keys(serviceRules).forEach((field) => {
@@ -157,7 +154,6 @@ export default function AdminPage() {
     }
   };
 
-  // Фильтрация отзывов
   const filteredReviews = useMemo(() => {
     const { type, value } = activeReviewFilter;
     if (!type || !value.trim()) return reviews;
@@ -178,7 +174,7 @@ export default function AdminPage() {
       <h1 className="text-h2">Панель администратора</h1>
 
       <div className="admin-layout">
-        {/* ЛЕВАЯ КОЛОНКА: Управление услугами */}
+        {}
         <section className="admin-section">
           <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
             <h2>Управление услугами</h2>
@@ -211,7 +207,7 @@ export default function AdminPage() {
           </div>
         </section>
 
-        {/* ПРАВАЯ КОЛОНКА: Управление отзывами */}
+        {}
         <section className="admin-section">
           <h2>Управление отзывами</h2>
           <div className="review-filters">
@@ -272,7 +268,7 @@ export default function AdminPage() {
         </section>
       </div>
 
-      {/* Модальное окно добавления/редактирования */}
+      {}
       {isModalOpen && (
         <div className="interactive-modal is-open" onClick={handleCloseModal}>
           <section

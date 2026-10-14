@@ -33,7 +33,7 @@ function Footer({ companyName = "Hoteza Web" }) {
         </section>
       </section>
 
-      {/* БЛОК ПО ТРЕБОВАНИЮ МЕТОДИЧКИ №2 (Контакты, О нас, Соцсети) */}
+      {}
       <section 
         style={{
           display: 'grid',
@@ -44,7 +44,7 @@ function Footer({ companyName = "Hoteza Web" }) {
           marginTop: '2rem'
         }}
       >
-        {/* О нас */}
+        {}
         <div>
           <h3 style={{ fontSize: '1.25rem', marginBottom: '0.8rem' }}>О сервисе</h3>
           <p className="text-body-gray-30" style={{ fontSize: '0.95rem', lineHeight: '1.5' }}>
@@ -52,7 +52,7 @@ function Footer({ companyName = "Hoteza Web" }) {
           </p>
         </div>
 
-        {/* Быстрая навигация */}
+        {}
         <div>
           <h3 style={{ fontSize: '1.25rem', marginBottom: '0.8rem' }}>Разделы</h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -63,7 +63,7 @@ function Footer({ companyName = "Hoteza Web" }) {
           </ul>
         </div>
 
-        {/* Контакты */}
+        {}
         <div>
           <h3 style={{ fontSize: '1.25rem', marginBottom: '0.8rem' }}>Контакты</h3>
           <p style={{ margin: '0 0 6px', color: '#555', fontSize: '0.95rem' }}>📞 +375 (29) 123-45-67</p>
@@ -71,7 +71,7 @@ function Footer({ companyName = "Hoteza Web" }) {
           <p style={{ margin: 0, color: '#555', fontSize: '0.95rem' }}>📍 г. Минск, пр-т Независимости, 4</p>
         </div>
 
-        {/* Социальные сети */}
+        {}
         <div>
           <h3 style={{ fontSize: '1.25rem', marginBottom: '0.8rem' }}>Мы в соцсетях</h3>
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>

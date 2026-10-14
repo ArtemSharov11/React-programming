@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import Avatar from '@mui/material/Avatar';
 
 export default function Header() {
   const { t, i18n } = useTranslation();
   const location = useLocation();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false); // Выпадающий список профиля
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const cartItems = useSelector((state) => state.cart.items);
   const cartCount = cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0);
@@ -31,7 +32,7 @@ export default function Header() {
 
         <div className="header-controls">
           <div className="settings-bar">
-            {/* Языки */}
+            {}
             <div className="lang-switch">
               <button
                 type="button"
@@ -49,24 +50,22 @@ export default function Header() {
               </button>
             </div>
 
-            {/* Навигация */}
             <nav style={{ display: 'flex', gap: '15px', alignItems: 'center', marginLeft: '10px' }}>
               <Link to="/catalog" style={{ textDecoration: 'none', color: '#000', fontWeight: '500' }}>
-                Каталог
+                {t('nav-catalog')}
               </Link>
               <Link
                 to="/cart"
                 style={{ textDecoration: 'none', color: '#000', fontWeight: '500', display: 'flex', alignItems: 'center' }}
               >
-                Корзина
+                {t('nav-cart')}
                 <span className="interactive-counter">{cartCount}</span>
               </Link>
               <Link to="/admin" className="cat-btn" style={{ fontSize: '0.85rem' }}>
-                Админка
+                {t('nav-admin')}
               </Link>
             </nav>
 
-            {/* БЛОК ПРОФИЛЯ ПО ПУНКТУ 1.3 МЕТОДИЧКИ №2 */}
             <div style={{ position: 'relative' }}>
               <button
                 type="button"
@@ -84,7 +83,10 @@ export default function Header() {
                   fontWeight: '500'
                 }}
               >
-                <span>👤</span> Гость (№101) ▾
+                <Avatar sx={{ width: 24, height: 24, fontSize: '0.8rem', bgcolor: '#6aad00' }}>
+                  Г
+                </Avatar>
+                Гость (№101) ▾
               </button>
 
               {isProfileOpen && (
@@ -108,10 +110,10 @@ export default function Header() {
                   <span style={{ fontSize: '0.8rem', color: '#777' }}>Номер: Deluxe 1</span>
                   <hr style={{ margin: '4px 0', border: 'none', borderTop: '1px solid #eee' }} />
                   <Link to="/cart" onClick={() => setIsProfileOpen(false)} style={{ textDecoration: 'none', color: '#000', fontSize: '0.9rem' }}>
-                    📦 Мои заказы ({cartCount})
+                    Мои заказы ({cartCount})
                   </Link>
                   <Link to="/admin" onClick={() => setIsProfileOpen(false)} style={{ textDecoration: 'none', color: '#000', fontSize: '0.9rem' }}>
-                    ⚙️ Панель управления
+                    Панель управления
                   </Link>
                   <button
                     type="button"
@@ -135,7 +137,6 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Бургер-кнопка */}
           <button
             type="button"
             className={`burger-menu blur-effect ${isMenuOpen ? 'is-active' : ''}`}
@@ -150,15 +151,24 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Выдвижное меню */}
       <div className={`side-menu ${isMenuOpen ? 'is-open' : ''}`} id="sideMenu">
         <nav className="side-menu__nav">
           <Link to="/" onClick={() => setIsMenuOpen(false)}>Главная</Link>
-          <a href="/#tariffs" onClick={() => setIsMenuOpen(false)}>Тарифы</a>
-          <a href="/#reviews" onClick={() => setIsMenuOpen(false)}>Отзывы</a>
-          <Link to="/catalog" onClick={() => setIsMenuOpen(false)} style={{ color: '#6aad00' }}>Каталог услуг</Link>
-          <Link to="/cart" onClick={() => setIsMenuOpen(false)}>Корзина ({cartCount})</Link>
-          <Link to="/admin" onClick={() => setIsMenuOpen(false)}>Админ-панель</Link>
+          <a href="/#tariffs" onClick={() => setIsMenuOpen(false)}>
+            {t('nav-tariffs')}
+          </a>
+          <a href="/#reviews" onClick={() => setIsMenuOpen(false)}>
+            {t('nav-reviews')}
+          </a>
+          <Link to="/catalog" onClick={() => setIsMenuOpen(false)} style={{ color: '#6aad00' }}>
+            {t('nav-catalog')}
+          </Link>
+          <Link to="/cart" onClick={() => setIsMenuOpen(false)}>
+            {t('nav-cart')} ({cartCount})
+          </Link>
+          <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
+            {t('nav-admin')}
+          </Link>
         </nav>
       </div>
 

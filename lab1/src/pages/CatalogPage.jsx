@@ -53,7 +53,6 @@ export default function CatalogPage() {
     dispatch(setPriceRange({ min: localMin, max: localMax }));
   };
 
-  // Переключение выбора конкретной карточки
   const toggleCardSelection = (e, id) => {
     e.stopPropagation();
     setSelectedIds((prev) =>
@@ -61,12 +60,11 @@ export default function CatalogPage() {
     );
   };
 
-  // ГРУППОВЫЕ ДЕЙСТВИЯ ДЛЯ МНОЖЕСТВЕННОГО ВЫБОРА
   const handleAddSelectedToCart = () => {
     const selectedItems = items.filter((item) => selectedIds.includes(item.id));
     selectedItems.forEach((item) => dispatch(addToCart(item)));
     alert(`В корзину добавлено услуг: ${selectedItems.length}`);
-    setSelectedIds([]); // Сбрасываем выбор
+    setSelectedIds([]);
   };
 
   const handleAddSelectedToFavorites = () => {
@@ -75,7 +73,6 @@ export default function CatalogPage() {
     setSelectedIds([]);
   };
 
-  // Фильтрация и сортировка
   const filteredServices = useMemo(() => {
     if (customList !== null) return customList;
 
@@ -97,14 +94,12 @@ export default function CatalogPage() {
     return res;
   }, [items, selectedCategory, searchQuery, minPrice, maxPrice, sortBy, customList]);
 
-  // Пагинация
   const totalPages = Math.max(1, Math.ceil(filteredServices.length / ITEMS_PER_PAGE));
   const paginatedServices = useMemo(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     return filteredServices.slice(start, start + ITEMS_PER_PAGE);
   }, [filteredServices, currentPage]);
 
-  // 10 методов массивов
   const runArrayMethod = (method) => {
     setActiveMethod(method);
     setCurrentPage(1);
@@ -188,15 +183,15 @@ export default function CatalogPage() {
   const handleAddToCart = (e, item) => {
     e.stopPropagation();
     dispatch(addToCart(item));
+    alert(`"${item.name}" успешно добавлено в корзину!`);
   };
 
   return (
     <main className="container">
       <section className="catalog-intro fade-in">
-        <h1 className="text-h2">Каталог услуг</h1>
+        <h1 className="text-h2">{t('catalog-title')}</h1>
       </section>
 
-      {/* Панель фильтров и поиска */}
       <div className="catalog-controls container">
         <div className="search-box">
           <input
@@ -222,11 +217,11 @@ export default function CatalogPage() {
               dispatch(setSortBy(e.target.value));
             }}
           >
-            <option value="default">Сортировать по...</option>
-            <option value="price-asc">Цена: дешевле</option>
-            <option value="price-desc">Цена: дороже</option>
+            <option value="default">{t('sort-default')}</option>
+            <option value="price-asc">{t('sort-price-asc')}</option>
+            <option value="price-desc">{t('sort-price-desc')}</option>
             <option value="name-asc">Название: А-Я</option>
-            <option value="rating-desc">Рейтинг: высокий</option>
+            <option value="rating-desc">{t('sort-rating')}</option>
           </select>
 
           <div className="category-list" id="category-list">
@@ -248,7 +243,7 @@ export default function CatalogPage() {
         </div>
 
         <div className="filter-range" style={{ marginTop: '1rem', display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <span className="text-body-gray-30">Цена от:</span>
+          <span className="text-body-gray-30">{t('price-from')}</span>
           <input
             type="number"
             id="price-min"
@@ -257,7 +252,7 @@ export default function CatalogPage() {
             value={localMin}
             onChange={(e) => setLocalMin(e.target.value)}
           />
-          <span className="text-body-gray-30">до:</span>
+          <span className="text-body-gray-30">{t('price-to')}</span>
           <input
             type="number"
             id="price-max"
@@ -266,13 +261,12 @@ export default function CatalogPage() {
             value={localMax}
             onChange={(e) => setLocalMax(e.target.value)}
           />
-          <button type="button" id="apply-filters" onClick={handleApplyPrice} className="cat-btn">
-            Применить фильтры
-          </button>
+        <button type="button" id="apply-filters" onClick={handleApplyPrice} className="cat-btn">
+          {t('btn-apply')}
+        </button>
         </div>
       </div>
 
-      {/* Панель методов массивов */}
       <section className="array-methods container" aria-labelledby="array-methods-title">
         <div className="array-methods__header">
           <button type="button" className="method-reset" id="method-reset" onClick={resetMethods}>
@@ -300,7 +294,6 @@ export default function CatalogPage() {
         )}
       </section>
 
-      {/* ПАНЕЛЬ МНОЖЕСТВЕННОГО ВЫБОРА С ГРУППОВЫМИ ДЕЙСТВИЯМИ */}
       <div 
         className="container" 
         style={{ 
@@ -351,7 +344,6 @@ export default function CatalogPage() {
         )}
       </div>
 
-      {/* Сетка карточек каталога */}
       <div id="catalog-container" className="catalog-grid container">
         {paginatedServices.length === 0 ? (
           <div className="no-results">
@@ -402,10 +394,11 @@ export default function CatalogPage() {
                     </span>
 
                     <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                      {/* Кнопка множественного выбора */}
+                      {}
                       <button
                         type="button"
                         onClick={(e) => toggleCardSelection(e, item.id)}
+                        я
                         className={`cat-btn ${isSelected ? 'active' : ''}`}
                         style={{ fontSize: '0.8rem', padding: '6px 12px' }}
                       >
@@ -440,7 +433,6 @@ export default function CatalogPage() {
         )}
       </div>
 
-      {/* Пагинация */}
       <nav
         className="pagination container"
         style={{
@@ -475,7 +467,6 @@ export default function CatalogPage() {
         </button>
       </nav>
 
-      {/* МОДАЛЬНОЕ ОКНО ДЕТАЛЕЙ — 1 В 1 КАК В ОРИГИНАЛЬНОМ openServiceDetails */}
       {selectedService && (
         <div
           className="interactive-modal is-open"
@@ -552,7 +543,6 @@ export default function CatalogPage() {
               </button>
             </header>
 
-            {/* Двухколоночный оригинальный блок: Слева фото 280px, Справа описание и плашки */}
             <div
               className="interactive-detail"
               style={{
@@ -578,7 +568,6 @@ export default function CatalogPage() {
                   {selectedService.description}
                 </p>
 
-                {/* Оригинальные плашки-таблетки */}
                 <div
                   className="interactive-detail__meta"
                   style={{ display: 'flex', flexWrap: 'wrap', gap: '0.55rem', margin: '0.75rem 0' }}
@@ -597,7 +586,6 @@ export default function CatalogPage() {
                   </span>
                 </div>
 
-                {/* Кнопки действий */}
                 <div style={{ display: 'flex', gap: '10px', marginTop: '0.5rem', flexWrap: 'wrap' }}>
                   <button
                     type="button"
