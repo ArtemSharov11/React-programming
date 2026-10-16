@@ -18,11 +18,16 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Snackbar from '@mui/material/Snackbar';
+import Dialog from '@mui/material/Dialog';
+import Slide from '@mui/material/Slide';
 
 
 
 const ITEMS_PER_PAGE = 6;
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 export default function CatalogPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -507,154 +512,132 @@ export default function CatalogPage() {
         />
       </div>
 
-      {selectedService && (
-        <div
-          className="interactive-modal is-open"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 9999,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.55)',
-            backdropFilter: 'blur(3px)',
-            padding: '1.25rem',
-            boxSizing: 'border-box'
-          }}
-          onClick={() => setSelectedService(null)}
-        >
-          <section
-            className="interactive-modal__dialog"
-            style={{
-              width: 'min(720px, 100%)',
-              maxHeight: 'min(86vh, 760px)',
-              overflowY: 'auto',
-              backgroundColor: '#ffffff',
-              borderRadius: '1.5rem',
-              padding: '1.75rem',
-              boxShadow: '0 28px 80px rgba(0, 0, 0, 0.35)',
-              boxSizing: 'border-box'
-            }}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="interactive-modal-title"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <header
-              className="interactive-modal__header"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '1rem',
-                marginBottom: '1.25rem',
-                borderBottom: '1px solid #eee',
-                paddingBottom: '0.75rem'
-              }}
-            >
-              <h2
-                className="interactive-modal__title"
-                id="interactive-modal-title"
-                style={{ margin: 0, fontSize: '1.8rem', fontWeight: 600, color: '#000' }}
-              >
+      <Dialog
+        open={Boolean(selectedService)}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={() => setSelectedService(null)}
+        maxWidth="md"
+        fullWidth
+        slotProps={{
+          paper: {
+            sx: {
+              borderRadius: '28px',
+              overflow: 'hidden'
+            }
+          },
+          backdrop: {
+            sx: {
+              backdropFilter: 'blur(8px)',
+              backgroundColor: 'rgba(0, 0, 0, 0.45)',
+            }
+          }
+        }}
+      >
+        {selectedService && (
+          <div style={{ padding: '32px', boxSizing: 'border-box', backgroundColor: '#fff' }}>
+            
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+              <h2 style={{ margin: 0, fontSize: '1.9rem', fontWeight: '700', color: '#111' }}>
                 {selectedService.name}
               </h2>
               <button
                 type="button"
-                className="interactive-modal__close"
+                onClick={() => setSelectedService(null)}
                 style={{
                   width: '38px',
                   height: '38px',
-                  border: 0,
+                  border: 'none',
                   borderRadius: '50%',
                   backgroundColor: '#f1f1f1',
                   cursor: 'pointer',
-                  fontSize: '1.4rem',
-                  lineHeight: 1,
+                  fontSize: '1.3rem',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  transition: 'background-color 0.2s'
                 }}
-                onClick={() => setSelectedService(null)}
-                aria-label="Закрыть"
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#e0e0e0'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#f1f1f1'}
               >
-                ×
+                ✕
               </button>
-            </header>
+            </div>
 
-            <div
-              className="interactive-detail"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-                gap: '1.5rem',
-                alignItems: 'start'
-              }}
-            >
-              <img
-                src={selectedService.image}
-                alt={selectedService.name}
-                style={{
-                  width: '100%',
-                  height: '260px',
-                  objectFit: 'cover',
-                  borderRadius: '1rem',
-                  display: 'block'
-                }}
-              />
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5', color: '#444' }}>
+            <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+              
+              <div style={{ flex: '1 1 280px', maxWidth: '340px' }}>
+                <img
+                  src={selectedService.image}
+                  alt={selectedService.name}
+                  style={{
+                    width: '100%',
+                    height: '240px',
+                    objectFit: 'cover',
+                    borderRadius: '20px',
+                    display: 'block',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
+                  }}
+                />
+              </div>
+
+              <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.6', color: '#555' }}>
                   {selectedService.description}
                 </p>
 
-                <div
-                  className="interactive-detail__meta"
-                  style={{ display: 'flex', flexWrap: 'wrap', gap: '0.55rem', margin: '0.75rem 0' }}
-                >
-                  <span className="interactive-pill" style={{ display: 'inline-flex', padding: '0.4rem 0.8rem', borderRadius: '999px', background: '#f1f1f1', fontSize: '0.9rem', color: '#000' }}>
-                    {selectedService.category}
-                  </span>
-                  <span className="interactive-pill" style={{ display: 'inline-flex', padding: '0.4rem 0.8rem', borderRadius: '999px', background: '#f1f1f1', fontSize: '0.9rem', color: '#000' }}>
-                    Цена: {formatPrice(selectedService.price)}
-                  </span>
-                  <span className="interactive-pill" style={{ display: 'inline-flex', padding: '0.4rem 0.8rem', borderRadius: '999px', background: '#f1f1f1', fontSize: '0.9rem', color: '#000' }}>
-                    Рейтинг: {selectedService.rating}
-                  </span>
-                  <span className="interactive-pill" style={{ display: 'inline-flex', padding: '0.4rem 0.8rem', borderRadius: '999px', background: '#f1f1f1', fontSize: '0.9rem', color: '#000' }}>
-                    Время: {selectedService.time} мин.
-                  </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  <Chip label={selectedService.category} size="small" sx={{ fontWeight: 600, bgcolor: '#f1f1f1' }} />
+                  <Chip label={`Цена: ${formatPrice(selectedService.price)}`} size="small" color="success" variant="outlined" sx={{ fontWeight: 600 }} />
+                  <Chip label={`Рейтинг: ★ ${selectedService.rating}`} size="small" sx={{ bgcolor: '#fff8e1', color: '#f57f17', fontWeight: 600 }} />
+                  <Chip label={`Время: ${selectedService.time} мин.`} size="small" sx={{ bgcolor: '#f1f1f1' }} />
                 </div>
 
-                <div style={{ display: 'flex', gap: '10px', marginTop: '0.5rem', flexWrap: 'wrap' }}>
-                  <button
-                    type="button"
-                    className="cat-btn active"
-                    style={{ padding: '0.6rem 1.4rem', fontWeight: 600 }}
+                <div style={{ display: 'flex', gap: '12px', marginTop: '12px', flexWrap: 'wrap' }}>
+                  <Button
+                    variant="contained"
                     onClick={(e) => {
                       handleAddToCart(e, selectedService);
                       setSelectedService(null);
                     }}
+                    sx={{
+                      borderRadius: '12px',
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      padding: '10px 22px',
+                      backgroundColor: '#6aad00',
+                      '&:hover': { backgroundColor: '#589000' }
+                    }}
                   >
-                    Добавить в корзину
-                  </button>
-                  <button
-                    type="button"
-                    className="cat-btn"
-                    style={{ padding: '0.6rem 1.4rem', fontWeight: 500 }}
+                    🛒 Добавить в корзину
+                  </Button>
+
+                  <Button
+                    variant="outlined"
                     onClick={(e) => {
                       handleFavoriteClick(e, selectedService);
                       setSelectedService(null);
                     }}
+                    sx={{
+                      borderRadius: '12px',
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      padding: '10px 20px',
+                      color: '#333',
+                      borderColor: '#ccc',
+                      '&:hover': { borderColor: '#999', backgroundColor: '#f9f9f9' }
+                    }}
                   >
-                    В избранное
-                  </button>
+                    ♥ В избранное
+                  </Button>
                 </div>
               </div>
+
             </div>
-          </section>
-        </div>
-      )}
+
+          </div>
+        )}
+      </Dialog>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
