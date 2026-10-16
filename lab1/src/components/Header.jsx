@@ -3,10 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-// Компоненты из Material UI
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 import Tooltip from '@mui/material/Tooltip';
+import Drawer from '@mui/material/Drawer';
+import Divider from '@mui/material/Divider';
 
 export default function Header() {
   const { t, i18n } = useTranslation();
@@ -81,7 +82,7 @@ export default function Header() {
             </nav>
 
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                <Tooltip title="Личный кабинет гостя" arrow placement="bottom" disablePortal>
+              <Tooltip title="Личный кабинет гостя" arrow placement="bottom" disablePortal>
                 <span style={{ display: 'inline-flex' }}>
                   <button
                     type="button"
@@ -157,10 +158,10 @@ export default function Header() {
 
           <button
             type="button"
-            className={`burger-menu blur-effect ${isMenuOpen ? 'is-active' : ''}`}
+            className="burger-menu blur-effect"
             id="burgerToggle"
             aria-label="Меню"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={() => setIsMenuOpen(true)}
           >
             <span></span>
             <span></span>
@@ -169,32 +170,110 @@ export default function Header() {
         </div>
       </header>
 
-      <div className={`side-menu ${isMenuOpen ? 'is-open' : ''}`} id="sideMenu">
-        <nav className="side-menu__nav">
-          <Link to="/" onClick={() => setIsMenuOpen(false)}>Главная</Link>
-          <a href="/#tariffs" onClick={() => setIsMenuOpen(false)}>
-            {t('nav-tariffs')}
-          </a>
-          <a href="/#reviews" onClick={() => setIsMenuOpen(false)}>
-            {t('nav-reviews')}
-          </a>
-          <Link to="/catalog" onClick={() => setIsMenuOpen(false)} style={{ color: '#6aad00' }}>
-            {t('nav-catalog')}
+      <Drawer
+        anchor="right"
+        open={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        sx={{
+          '& .MuiDrawer-paper': {
+            width: '460px !important',
+            maxWidth: '90vw',
+            boxSizing: 'border-box',
+            padding: '32px 28px',
+            backgroundColor: '#ffffff'
+          }
+        }}
+        slotProps={{
+          backdrop: {
+            sx: {
+              backdropFilter: 'blur(5px)',
+              backgroundColor: 'rgba(0,0,0,0.45)'
+            }
+          }
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <span style={{ fontWeight: 800, fontSize: '1.5rem', color: '#111' }}>Меню отеля</span>
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen(false)}
+            style={{
+              width: '40px',
+              height: '40px',
+              border: 'none',
+              borderRadius: '50%',
+              backgroundColor: '#f5f5f5',
+              cursor: 'pointer',
+              fontSize: '1.3rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#e0e0e0'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+          >
+            ✕
+          </button>
+        </div>
+
+        <Divider sx={{ mb: 3 }} />
+
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <Link 
+            to="/" 
+            onClick={() => setIsMenuOpen(false)} 
+            style={{ textDecoration: 'none', color: '#222', fontWeight: 500, padding: '12px 16px', borderRadius: '12px', fontSize: '1.15rem', transition: 'background-color 0.2s' }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+          >
+            🏠 Главная
           </Link>
-          <Link to="/cart" onClick={() => setIsMenuOpen(false)}>
-            {t('nav-cart')} ({cartCount})
+          <a 
+            href="/#tariffs" 
+            onClick={() => setIsMenuOpen(false)} 
+            style={{ textDecoration: 'none', color: '#222', fontWeight: 500, padding: '12px 16px', borderRadius: '12px', fontSize: '1.15rem', transition: 'background-color 0.2s' }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+          >
+            🏷️ {t('nav-tariffs')}
+          </a>
+          <a 
+            href="/#reviews" 
+            onClick={() => setIsMenuOpen(false)} 
+            style={{ textDecoration: 'none', color: '#222', fontWeight: 500, padding: '12px 16px', borderRadius: '12px', fontSize: '1.15rem', transition: 'background-color 0.2s' }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+          >
+            ⭐ {t('nav-reviews')}
+          </a>
+          <Link 
+            to="/catalog" 
+            onClick={() => setIsMenuOpen(false)} 
+            style={{ textDecoration: 'none', color: '#6aad00', fontWeight: 700, padding: '12px 16px', borderRadius: '12px', backgroundColor: '#f4fce8', fontSize: '1.15rem' }}
+          >
+            📋 {t('nav-catalog')}
           </Link>
-          <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
-            {t('nav-admin')}
+          <Link 
+            to="/cart" 
+            onClick={() => setIsMenuOpen(false)} 
+            style={{ textDecoration: 'none', color: '#222', fontWeight: 500, padding: '12px 16px', borderRadius: '12px', fontSize: '1.15rem', transition: 'background-color 0.2s' }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+          >
+            🛒 {t('nav-cart')} ({cartCount})
+          </Link>
+          <Link 
+            to="/admin" 
+            onClick={() => setIsMenuOpen(false)} 
+            style={{ textDecoration: 'none', color: '#222', fontWeight: 500, padding: '12px 16px', borderRadius: '12px', fontSize: '1.15rem', transition: 'background-color 0.2s' }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+          >
+            ⚙️ {t('nav-admin')}
           </Link>
         </nav>
-      </div>
-
-      <div
-        className={`overlay ${isMenuOpen ? 'is-active' : ''}`}
-        id="overlay"
-        onClick={() => setIsMenuOpen(false)}
-      ></div>
+      </Drawer>
     </>
   );
 }

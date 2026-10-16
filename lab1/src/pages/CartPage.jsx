@@ -6,7 +6,7 @@ import { updateQuantity, removeFromCart, clearCart } from '../store/cartSlice';
 
 import CircularProgress from '@mui/material/CircularProgress';
 import Card from '@mui/material/Card';
-
+  
 
 
 const API_URL = "http://localhost:3000";
