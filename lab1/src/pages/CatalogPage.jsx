@@ -14,6 +14,7 @@ import Rating from '@mui/material/Rating';
 import Pagination from '@mui/material/Pagination';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
+import Alert from '@mui/material/Alert';
 
 
 
@@ -312,9 +313,17 @@ export default function CatalogPage() {
         </div>
 
         {methodMsg && (
-          <p className="method-result" id="method-result" aria-live="polite">
+          <Alert 
+            severity="info" 
+            variant="standard"
+            sx={{ 
+              marginTop: '1rem', 
+              borderRadius: '12px',
+              fontSize: '0.95rem'
+            }}
+          >
             {methodMsg}
-          </p>
+          </Alert>
         )}
       </section>
 
