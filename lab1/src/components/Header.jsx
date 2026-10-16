@@ -3,9 +3,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-
+// Компоненты из Material UI
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
+import Tooltip from '@mui/material/Tooltip';
 
 export default function Header() {
   const { t, i18n } = useTranslation();
@@ -35,7 +36,6 @@ export default function Header() {
 
         <div className="header-controls">
           <div className="settings-bar">
-            {}
             <div className="lang-switch">
               <button
                 type="button"
@@ -80,28 +80,32 @@ export default function Header() {
               </Link>
             </nav>
 
-            <div style={{ position: 'relative' }}>
-              <button
-                type="button"
-                className="user-avatar-btn"
-                onClick={() => setIsProfileOpen(!isProfileOpen)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  background: '#f1f1f1',
-                  border: '1px solid #ddd',
-                  borderRadius: '20px',
-                  padding: '6px 14px',
-                  cursor: 'pointer',
-                  fontWeight: '500'
-                }}
-              >
-                <Avatar sx={{ width: 24, height: 24, fontSize: '0.8rem', bgcolor: '#6aad00' }}>
-                  Г
-                </Avatar>
-                Гость (№101) ▾
-              </button>
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <Tooltip title="Личный кабинет гостя" arrow placement="bottom" disablePortal>
+                <span style={{ display: 'inline-flex' }}>
+                  <button
+                    type="button"
+                    className="user-avatar-btn"
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      background: '#f1f1f1',
+                      border: '1px solid #ddd',
+                      borderRadius: '20px',
+                      padding: '6px 14px',
+                      cursor: 'pointer',
+                      fontWeight: '500'
+                    }}
+                  >
+                    <Avatar sx={{ width: 24, height: 24, fontSize: '0.8rem', bgcolor: '#6aad00' }}>
+                      Г
+                    </Avatar>
+                    Гость (№101) ▾
+                  </button>
+                </span>
+              </Tooltip>
 
               {isProfileOpen && (
                 <div
