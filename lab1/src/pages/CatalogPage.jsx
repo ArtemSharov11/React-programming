@@ -13,6 +13,7 @@ import { addToCart } from '../store/cartSlice';
 import Rating from '@mui/material/Rating';
 import Pagination from '@mui/material/Pagination';
 import TextField from '@mui/material/TextField';
+import Chip from '@mui/material/Chip';
 
 
 
@@ -239,21 +240,29 @@ export default function CatalogPage() {
             <option value="rating-desc">{t('sort-rating')}</option>
           </select>
 
-          <div className="category-list" id="category-list">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                className={`cat-btn ${selectedCategory === cat ? 'active' : ''}`}
-                onClick={() => {
-                  setCurrentPage(1);
-                  resetMethods();
-                  dispatch(setSelectedCategory(cat));
-                }}
-              >
-                {cat === 'all' ? 'Все' : cat}
-              </button>
-            ))}
+          <div className="category-list" id="category-list" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            {categories.map((cat) => {
+              const isSelected = selectedCategory === cat;
+              return (
+                <Chip
+                  key={cat}
+                  label={cat === 'all' ? 'Все' : cat}
+                  clickable
+                  color={isSelected ? 'success' : 'default'}
+                  variant={isSelected ? 'filled' : 'outlined'}
+                  onClick={() => {
+                    setCurrentPage(1);
+                    resetMethods();
+                    dispatch(setSelectedCategory(cat));
+                  }}
+                  sx={{
+                    fontWeight: isSelected ? '600' : '400',
+                    fontSize: '0.9rem',
+                    padding: '4px 6px'
+                  }}
+                />
+              );
+            })}
           </div>
         </div>
 
