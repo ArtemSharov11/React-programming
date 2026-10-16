@@ -16,6 +16,7 @@ import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 
 
 
@@ -307,6 +308,7 @@ export default function CatalogPage() {
         </div>
       </div>
 
+      <Divider sx={{ my: 3 }} />
       <section className="array-methods container" aria-labelledby="array-methods-title">
         <div className="array-methods__header">
           <button type="button" className="method-reset" id="method-reset" onClick={resetMethods}>
