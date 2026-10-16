@@ -1,16 +1,33 @@
-# React + Vite
+# Лабораторная работа №3: Использование готовых библиотек компонентов
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 1. Выбранная библиотека компонентов
+В качестве основной библиотеки компонентов для разработки SPA-приложения отеля была выбрана **Material UI (MUI v5)** — современная компонентная библиотека для React.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 2. Список использованных компонентов (15 компонентов)
 
-## React Compiler
+В проекте задействовано 15 уникальных функциональных компонентов библиотеки `@mui/material`:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Avatar** (`Header.jsx`) — отображение стилизованной круглой аватарки текущего гостя в шапке.
+2. **Badge** (`Header.jsx`) — динамический числовой индикатор количества добавленных услуг поверх ссылки на корзину.
+3. **Tooltip** (`Header.jsx`) — всплывающая подсказка с пояснением при наведении курсора на профиль пользователя.
+4. **Rating** (`CatalogPage.jsx`) — графическое отображение звездного рейтинга каждой услуги (от 1 до 5 звезд).
+5. **Pagination** (`CatalogPage.jsx`) — компонент постраничной навигации по каталогу услуг с выбором страниц.
+6. **TextField** (`CatalogPage.jsx`) — поле ввода для фильтрации и поиска услуг по названию/описанию с анимацией фокуса.
+7. **Chip** (`CatalogPage.jsx`) — интерактивные кликабельные теги для выбора категорий услуг (SPA, Бассейн и др.).
+8. **Alert** (`CatalogPage.jsx`) — информационный баннер с иконкой для вывода результатов демонстрации методов массивов (`map`, `filter`, `reduce` и др.).
+9. **Button** (`CatalogPage.jsx`) — стилизованная кнопка применения фильтра цен с эффектом волны (Material Ripple).
+10. **Divider** (`CatalogPage.jsx`, `Header.jsx`) — визуальный разделитель для разграничения логических блоков страниц.
+11. **Snackbar** (`CatalogPage.jsx`) — всплывающее Toast-уведомление в правом нижнем углу при добавлении услуги в корзину.
+12. **CircularProgress** (`CartPage.jsx`) — круговой индикатор загрузки данных корзины при обращении к серверу.
+13. **Card** (`CartPage.jsx`) — блочный контейнер для оформления карточки товара в корзине с эффектом глубины (`elevation`).
+14. **Dialog** (`CatalogPage.jsx`) — интерактивное модальное окно с детальной информацией об услуге, эффектом `Slide` и размытием фона (`backdropFilter`).
+15. **Drawer** (`Header.jsx`) — боковая навигационная шторка, плавно выдвигающаяся справа при нажатии на бургер-меню.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 3. Выполненные требования
+- Соблюдена история коммитов: каждый компонент зафиксирован отдельным коммитом (`feat: ...`).
+- Обеспечен единый визуальный стиль приложения на всех страницах (`CatalogPage`, `CartPage`, `Header`).
+- Реализована интерактивность: анимации вылета окон, всплывающие подсказки, индикаторы состояний и адаптивность.
