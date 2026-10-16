@@ -15,6 +15,7 @@ import Pagination from '@mui/material/Pagination';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 
 
 
@@ -286,9 +287,23 @@ export default function CatalogPage() {
             value={localMax}
             onChange={(e) => setLocalMax(e.target.value)}
           />
-        <button type="button" id="apply-filters" onClick={handleApplyPrice} className="cat-btn">
-          {t('btn-apply')}
-        </button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleApplyPrice}
+            sx={{
+              borderRadius: '10px',
+              textTransform: 'none',
+              fontWeight: '600',
+              padding: '6px 18px',
+              backgroundColor: '#6aad00',
+              '&:hover': {
+                backgroundColor: '#589000'
+              }
+            }}
+          >
+            {t('btn-apply')}
+          </Button>
         </div>
       </div>
 
