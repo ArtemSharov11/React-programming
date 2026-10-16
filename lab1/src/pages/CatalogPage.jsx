@@ -17,6 +17,7 @@ import Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import Snackbar from '@mui/material/Snackbar';
 
 
 
@@ -33,6 +34,9 @@ export default function CatalogPage() {
   const [localMin, setLocalMin] = useState(minPrice);
   const [localMax, setLocalMax] = useState(maxPrice);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarText, setSnackbarText] = useState('');
 
   const [selectedService, setSelectedService] = useState(null);
     React.useEffect(() => {
@@ -194,9 +198,9 @@ export default function CatalogPage() {
   const handleAddToCart = (e, item) => {
     e.stopPropagation();
     dispatch(addToCart(item));
-    alert(`"${item.name}" успешно добавлено в корзину!`);
+    setSnackbarText(`Услуга "${item.name}" успешно добавлена в корзину!`);
+    setSnackbarOpen(true);
   };
-
   return (
     <main className="container">
       <section className="catalog-intro fade-in">
@@ -651,6 +655,16 @@ export default function CatalogPage() {
           </section>
         </div>
       )}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity="success" sx={{ width: '100%', borderRadius: '12px' }}>
+          {snackbarText}
+        </Alert>
+      </Snackbar>
     </main>
   );
 }
