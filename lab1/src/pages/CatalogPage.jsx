@@ -9,6 +9,10 @@ import {
 } from '../store/servicesSlice';
 import { addToCart } from '../store/cartSlice';
 
+
+import Rating from '@mui/material/Rating';
+
+
 const ITEMS_PER_PAGE = 6;
 
 export default function CatalogPage() {
@@ -383,10 +387,16 @@ export default function CatalogPage() {
                   <h3 className="service-card__title text-body-34">{item.name}</h3>
                   <p className="service-card__description text-body-gray-30">{item.description}</p>
                   
-                  <div className="service-card__meta">
-                    <span>Рейтинг: {item.rating}</span>
-                    <span>Время: {item.time} мин.</span>
-                  </div>
+                <div className="service-card__meta" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Rating 
+                    value={Number(item.rating) || 5} 
+                    precision={0.5} 
+                    readOnly 
+                    size="small" 
+                  />
+                  <span style={{ fontSize: '0.85rem', color: '#666' }}>({item.rating})</span>
+                  <span>Время: {item.time} мин.</span>
+                </div>
 
                   <div className="service-card__footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
                     <span className="service-card__price text-price-large" style={{ fontSize: '1.8rem' }}>
