@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { updateQuantity, removeFromCart, clearCart } from '../store/cartSlice';
 
 import CircularProgress from '@mui/material/CircularProgress';
+import Card from '@mui/material/Card';
 
 
 
@@ -185,7 +186,7 @@ export default function CartPage() {
           </div>
         ) : (
           displayItems.map((item) => (
-            <article key={item.id} className="service-card pop-in">
+            <Card key={item.id} className="service-card pop-in">
               <div className="service-card__image-container">
                 <img src={item.image} alt={item.name} className="service-card__image" />
               </div>
@@ -220,7 +221,7 @@ export default function CartPage() {
                   {t('delete')}
                 </button>
               </div>
-            </article>
+            </Card>
           ))
         )}
       </div>
