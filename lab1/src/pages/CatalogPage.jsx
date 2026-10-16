@@ -11,6 +11,8 @@ import { addToCart } from '../store/cartSlice';
 
 
 import Rating from '@mui/material/Rating';
+import Pagination from '@mui/material/Pagination';
+
 
 
 const ITEMS_PER_PAGE = 6;
@@ -443,39 +445,19 @@ export default function CatalogPage() {
         )}
       </div>
 
-      <nav
-        className="pagination container"
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '20px',
-          margin: '2rem 0'
-        }}
-        aria-label="Навигация по страницам"
-      >
-        <button
-          type="button"
-          id="prev-page"
-          className="cat-btn"
-          disabled={currentPage <= 1}
-          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-        >
-          ← Назад
-        </button>
-        <span id="current-page-info" className="text-body-30">
-          Страница {currentPage} из {totalPages}
-        </span>
-        <button
-          type="button"
-          id="next-page"
-          className="cat-btn"
-          disabled={currentPage >= totalPages}
-          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-        >
-          Вперед →
-        </button>
-      </nav>
+      <div style={{ display: 'flex', justifyContent: 'center', margin: '2.5rem 0' }}>
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={(event, value) => {
+            setCurrentPage(value);
+            window.scrollTo({ top: 300, behavior: 'smooth' }); // приятная плавная прокрутка к товарам
+          }}
+          color="primary"
+          shape="rounded"
+          size="large"
+        />
+      </div>
 
       {selectedService && (
         <div
