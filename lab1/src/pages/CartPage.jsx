@@ -4,6 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { updateQuantity, removeFromCart, clearCart } from '../store/cartSlice';
 
+import CircularProgress from '@mui/material/CircularProgress';
+
+
+
 const API_URL = "http://localhost:3000";
 
 export default function CartPage() {
@@ -18,6 +22,7 @@ export default function CartPage() {
   const fetchServerCart = async () => {
     try {
       setIsLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 600));
       const res = await fetch(`${API_URL}/cart`);
       if (res.ok) {
         const data = await res.json();
@@ -162,9 +167,13 @@ export default function CartPage() {
       </div>
 
       <div id="catalog-container" className="catalog-grid container">
-        {displayItems.length === 0 ? (
-          <div style={{ width: '100%', textAlign: 'center', padding: '3rem 0', gridColumn: '1 / -1' }}>
-            <h2 className="text-h2">{t('cart-empty')}</h2>
+          {isLoading ? (
+              <div style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '5rem 0', gridColumn: '1 / -1' }}>
+                <CircularProgress color="success" size={48} />
+              </div>
+            ) : displayItems.length === 0 ? (
+              <div style={{ width: '100%', textAlign: 'center', padding: '3rem 0', gridColumn: '1 / -1' }}>
+                <h2 className="text-h2">{t('cart-empty')}</h2>
             
             <Link 
               to="/catalog" 
