@@ -12,6 +12,7 @@ import { addToCart } from '../store/cartSlice';
 
 import Rating from '@mui/material/Rating';
 import Pagination from '@mui/material/Pagination';
+import TextField from '@mui/material/TextField';
 
 
 
@@ -199,16 +200,24 @@ export default function CatalogPage() {
       </section>
 
       <div className="catalog-controls container">
-        <div className="search-box">
-          <input
-            type="text"
-            id="search-input"
+        <div className="search-box" style={{ width: '100%', marginBottom: '1.5rem' }}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            size="small"
             placeholder={t('search-placeholder') || 'Поиск услуги по названию или описанию...'}
             value={searchQuery}
             onChange={(e) => {
               setCurrentPage(1);
               resetMethods();
               dispatch(setSearchQuery(e.target.value));
+            }}
+            sx={{
+              backgroundColor: '#fff',
+              borderRadius: '12px',
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '12px',
+              }
             }}
           />
         </div>
