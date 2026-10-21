@@ -29,7 +29,7 @@ const servicesSlice = createSlice({
     error: null
   },
   reducers: {
-    addService: (state, action) => {
+      addService: (state, action) => {
       const validationError = validateService(action.payload);
       if (validationError) {
         state.error = validationError;
@@ -38,8 +38,8 @@ const servicesSlice = createSlice({
       state.items.unshift({
         ...action.payload,
         id: Date.now().toString(),
-        rating: 5,
-        time: action.payload.time || 15
+        rating: Number(action.payload.rating) || 5,
+        time: Number(action.payload.time) || 30
       });
       state.error = null;
     },
@@ -72,8 +72,24 @@ const servicesSlice = createSlice({
       state.sortBy = action.payload;
     },
     setPriceRange: (state, action) => {
-      state.minPrice = action.payload.min;
-      state.maxPrice = action.payload.max;
+    const { min, max } = action.payload;
+      
+      if (min !== '' && Number(min) < 0) {
+        state.error = 'Минимальная цена не может быть отрицательной!';
+        return;
+      }
+      if (max !== '' && Number(max) < 0) {
+        state.error = 'Максимальная цена не может быть отрицательной!';
+        return;
+      }
+      if (min !== '' && max !== '' && Number(min) > Number(max)) {
+        state.error = 'Минимальная цена не может превышать максимальную!';
+        return;
+      }
+
+      state.minPrice = min;
+      state.maxPrice = max;
+      state.error = null;
     },
     clearError: (state) => {
       state.error = null;

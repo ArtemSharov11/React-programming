@@ -1,12 +1,11 @@
 html {
     font-size: 16px;
-    max-width: 85.125rem;
-    margin: 0 auto;
     scrollbar-gutter: stable;
 }
 
 body {
-    margin: 0;
+    max-width: 85.125rem;
+    margin: 0 auto;    
     padding: 0;
     font-family: 'Roboto', Arial, sans-serif;
     background-color: #f5f5f5;

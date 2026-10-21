@@ -12,6 +12,8 @@ import './tablet.css';
 import './catalog.css';
 import App from './App.jsx';
 
+window.store = store;
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>

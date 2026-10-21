@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addService, updateService, deleteService } from "../store/servicesSlice";
+import { useTranslation } from "react-i18next";
+import { addService, updateService, deleteService, clearError } from "../store/servicesSlice";
+import Alert from "@mui/material/Alert";
 import "../Admin.css";
 
 const serviceRules = {
@@ -46,8 +48,10 @@ const initialForm = {
 };
 
 export default function AdminPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const services = useSelector((state) => state.services.items);
+
+  const { items: services, error: reduxError } = useSelector((state) => state.services);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState(initialForm);
@@ -74,12 +78,14 @@ export default function AdminPage() {
   const isFormValid = Object.keys(errors).length === 0;
 
   const handleOpenAdd = () => {
+    dispatch(clearError());
     setFormData(initialForm);
     setTouched({});
     setIsModalOpen(true);
   };
 
   const handleOpenEdit = (service) => {
+    dispatch(clearError());
     setFormData({
       id: service.id,
       name: service.name || "",
@@ -96,6 +102,7 @@ export default function AdminPage() {
     setIsModalOpen(false);
     setFormData(initialForm);
     setTouched({});
+    dispatch(clearError());
   };
 
   const handleChange = (e) => {
@@ -111,6 +118,7 @@ export default function AdminPage() {
   const handleResetForm = () => {
     setFormData(initialForm);
     setTouched({});
+    dispatch(clearError());
   };
 
   const handleSubmit = (e) => {
@@ -131,10 +139,8 @@ export default function AdminPage() {
 
     if (formData.id) {
       dispatch(updateService(payload));
-      alert("Услуга обновлена.");
     } else {
       dispatch(addService(payload));
-      alert("Услуга добавлена.");
     }
 
     handleCloseModal();
@@ -143,14 +149,12 @@ export default function AdminPage() {
   const handleDeleteService = (id) => {
     if (window.confirm("Удалить услугу из каталога?")) {
       dispatch(deleteService(id));
-      alert("Услуга удалена.");
     }
   };
 
   const handleDeleteReview = (id) => {
     if (window.confirm("Удалить этот отзыв?")) {
       setReviews((prev) => prev.filter((r) => r.id !== id));
-      alert("Отзыв удалён.");
     }
   };
 
@@ -171,15 +175,24 @@ export default function AdminPage() {
 
   return (
     <main className="container" style={{ minHeight: "75vh", padding: "2rem 0" }}>
-      <h1 className="text-h2">Панель администратора</h1>
+      <h1 className="text-h2">{t('admin-title')}</h1>
+
+      {reduxError && (
+        <Alert 
+          severity="error" 
+          onClose={() => dispatch(clearError())} 
+          sx={{ my: 2, borderRadius: "12px" }}
+        >
+          {reduxError}
+        </Alert>
+      )}
 
       <div className="admin-layout">
-        {}
         <section className="admin-section">
           <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
             <h2>Управление услугами</h2>
             <button type="button" className="cat-btn active" onClick={handleOpenAdd}>
-              Добавить услугу
+              {t('admin-add-service')}
             </button>
           </div>
 
@@ -199,7 +212,7 @@ export default function AdminPage() {
                     className="cat-btn danger"
                     onClick={() => handleDeleteService(service.id)}
                   >
-                    Удалить
+                    {t('delete')}
                   </button>
                 </div>
               </article>
@@ -207,7 +220,6 @@ export default function AdminPage() {
           </div>
         </section>
 
-        {}
         <section className="admin-section">
           <h2>Управление отзывами</h2>
           <div className="review-filters">
@@ -259,7 +271,7 @@ export default function AdminPage() {
                     className="cat-btn danger"
                     onClick={() => handleDeleteReview(r.id)}
                   >
-                    Удалить
+                    {t('delete')}
                   </button>
                 </article>
               ))
@@ -268,7 +280,6 @@ export default function AdminPage() {
         </section>
       </div>
 
-      {}
       {isModalOpen && (
         <div className="interactive-modal is-open" onClick={handleCloseModal}>
           <section
@@ -279,7 +290,7 @@ export default function AdminPage() {
           >
             <header className="interactive-modal__header">
               <h2 className="interactive-modal__title">
-                {formData.id ? "Редактировать услугу" : "Добавить услугу"}
+                {formData.id ? t('admin-edit-service') : t('admin-add-service')}
               </h2>
               <button
                 type="button"
@@ -396,7 +407,7 @@ export default function AdminPage() {
                   className={`btn-reg ${isFormValid ? "active" : ""}`}
                   disabled={!isFormValid}
                 >
-                  {formData.id ? "Сохранить изменения" : "Добавить услугу"}
+                  {t('save')}
                 </button>
                 <button type="button" className="cat-btn" onClick={handleResetForm}>
                   Сбросить

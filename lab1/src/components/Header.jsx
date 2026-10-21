@@ -82,7 +82,7 @@ export default function Header() {
             </nav>
 
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-              <Tooltip title="Личный кабинет гостя" arrow placement="bottom" disablePortal>
+              <Tooltip title="Личный кабинет гостя" arrow placement="bottom">
                 <span style={{ display: 'inline-flex' }}>
                   <button
                     type="button"

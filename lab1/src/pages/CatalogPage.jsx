@@ -9,7 +9,6 @@ import {
 } from '../store/servicesSlice';
 import { addToCart } from '../store/cartSlice';
 
-
 import Rating from '@mui/material/Rating';
 import Pagination from '@mui/material/Pagination';
 import TextField from '@mui/material/TextField';
@@ -22,7 +21,6 @@ import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
 
 
-
 const ITEMS_PER_PAGE = 6;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -32,7 +30,7 @@ export default function CatalogPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const { items, searchQuery, selectedCategory, sortBy, minPrice, maxPrice } = useSelector(
+  const { items, searchQuery, selectedCategory, sortBy, minPrice, maxPrice, error } = useSelector(
     (state) => state.services
   );
 
@@ -210,6 +208,11 @@ export default function CatalogPage() {
     <main className="container">
       <section className="catalog-intro fade-in">
         <h1 className="text-h2">{t('catalog-title')}</h1>
+        {error && (
+        <Alert severity="error" sx={{ my: 2, borderRadius: '12px' }}>
+          {error}
+        </Alert>
+      )}
       </section>
 
       <div className="catalog-controls container">
@@ -459,11 +462,9 @@ export default function CatalogPage() {
                     </span>
 
                     <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                      {}
                       <button
                         type="button"
-                        onClick={(e) => toggleCardSelection(e, item.id)}
-                        я
+                        onClick={(e) => toggleCardSelection(e, item.id)}                  
                         className={`cat-btn ${isSelected ? 'active' : ''}`}
                         style={{ fontSize: '0.8rem', padding: '6px 12px' }}
                       >
@@ -504,7 +505,7 @@ export default function CatalogPage() {
           page={currentPage}
           onChange={(event, value) => {
             setCurrentPage(value);
-            window.scrollTo({ top: 300, behavior: 'smooth' }); // приятная плавная прокрутка к товарам
+            window.scrollTo({ top: 300, behavior: 'smooth' });
           }}
           color="primary"
           shape="rounded"
@@ -514,7 +515,7 @@ export default function CatalogPage() {
 
       <Dialog
         open={Boolean(selectedService)}
-        TransitionComponent={Transition}
+        slots={{ transition: Transition }}
         keepMounted
         onClose={() => setSelectedService(null)}
         maxWidth="md"

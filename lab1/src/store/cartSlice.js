@@ -38,9 +38,21 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
       state.error = null;
+    },
+
+    // ВОТ ЗДЕСЬ ДОБАВЛЕНО:
+    clearCartError: (state) => {
+      state.error = null;
     }
   }
 });
 
-export const { addToCart, updateQuantity, removeFromCart, clearCart } = cartSlice.actions;
+export const { 
+  addToCart, 
+  updateQuantity, 
+  removeFromCart, 
+  clearCart, 
+  clearCartError 
+} = cartSlice.actions;
+
 export default cartSlice.reducer;

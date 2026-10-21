@@ -1,137 +1,70 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { updateQuantity, removeFromCart, clearCart } from '../store/cartSlice';
+import { updateQuantity, removeFromCart, clearCart, clearCartError } from '../store/cartSlice';
 
-import CircularProgress from '@mui/material/CircularProgress';
 import Card from '@mui/material/Card';
-  
-
-
-const API_URL = "http://localhost:3000";
+import Alert from '@mui/material/Alert';
 
 export default function CartPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Берем корзину и ошибку НАПРЯМУЮ из Redux (никаких внешних серверов!)
   const { items, error } = useSelector((state) => state.cart);
-  const [localItems, setLocalItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchServerCart = async () => {
-    try {
-      setIsLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 600));
-      const res = await fetch(`${API_URL}/cart`);
-      if (res.ok) {
-        const data = await res.json();
-        setLocalItems(data);
-      } else {
-        setLocalItems(items);
-      }
-    } catch {
-      setLocalItems(items);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const totalPrice = items.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
 
-  useEffect(() => {
-    fetchServerCart();
-  }, [items]);
-
-  const displayItems = localItems.length ? localItems : items;
-  const totalPrice = displayItems.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
-
-  const handleUpdateQty = async (id, newQty) => {
-    if (newQty < 1) return;
-
+  const handleUpdateQty = (id, newQty) => {
+    // Отправляем новое количество. Если оно < 1, Redux запишет ошибку в state.error
     dispatch(updateQuantity({ id, quantity: newQty }));
+  };
 
-    try {
-      await fetch(`${API_URL}/cart/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quantity: newQty })
-      });
-      fetchServerCart();
-    } catch (err) {
-      console.log('Работаем в локальном режиме без json-server:', err);
+  const handleRemoveItem = (id) => {
+    if (window.confirm("Удалить услугу из корзины?")) {
+      dispatch(removeFromCart(id));
     }
   };
 
-  const handleRemoveItem = async (id) => {
-    const confirmed = window.confirm("Удалить услугу из корзины?");
-    if (!confirmed) return;
-
-    dispatch(removeFromCart(id));
-
-    try {
-      await fetch(`${API_URL}/cart/${id}`, { method: 'DELETE' });
-      fetchServerCart();
-    } catch (err) {
-      console.log('Локальное удаление без сервера:', err);
-    }
-  };
-
-  const handleCheckout = async () => {
-    if (displayItems.length === 0) {
+  const handleCheckout = () => {
+    if (items.length === 0) {
       alert(t('cart-empty'));
       return;
     }
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     
+    // Если обязательно нужна авторизация:
     if (!currentUser) {
-      const confirmAuth = window.confirm("Для оформления заказа рекомендуется войти в систему. Перейти к авторизации?");
+      const confirmAuth = window.confirm("Для оформления заказа необходимо войти в систему. Перейти к авторизации?");
       if (confirmAuth) {
         navigate('/auth');
-        return;
       }
-    }
-
-    const newOrder = {
-      userId: currentUser ? currentUser.id : "guest",
-      items: displayItems,
-      totalPrice: totalPrice,
-      date: new Date().toLocaleString('ru-RU')
-    };
-
-    try {
-      const orderResponse = await fetch(`${API_URL}/orders`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newOrder)
-      });
-
-      if (orderResponse.ok) {
-        for (const item of displayItems) {
-          await fetch(`${API_URL}/cart/${item.id}`, { method: 'DELETE' });
-        }
-      }
-    } catch (err) {
-      console.log('Сервер заказов недоступен, очищаем локально:', err);
+      return; // <-- ВАЖНО: останавливаем выполнение, не оформляем заказ без входа!
     }
 
     dispatch(clearCart());
-    setLocalItems([]);
-    
     alert(t('order-success')); 
   };
 
   return (
-    <main className="container" style={{ minHeight: '75vh' }}>
+    <main className="container" style={{ minHeight: '75vh', paddingBottom: '3rem' }}>
       <section className="catalog-intro fade-in">
         <h1 className="text-h2">{t('cart-title')}</h1>
         <p className="text-body-gray-30">Управляйте вашими заказами и услугами</p>
       </section>
 
+      {/* ОШИБКА ИЗ REDUX (например: "Количество не может быть меньше 1!") */}
       {error && (
-        <div style={{ backgroundColor: '#ffebee', color: '#c62828', padding: '1rem', borderRadius: '1rem', margin: '1rem 0' }}>
+        <Alert 
+          severity="error" 
+          onClose={() => dispatch(clearCartError())} 
+          sx={{ my: 2, borderRadius: '12px' }}
+        >
           {error}
-        </div>
+        </Alert>
       )}
 
       <div className="cart-summary container" style={{ marginBottom: '3rem' }}>
@@ -168,14 +101,9 @@ export default function CartPage() {
       </div>
 
       <div id="catalog-container" className="catalog-grid container">
-          {isLoading ? (
-              <div style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '5rem 0', gridColumn: '1 / -1' }}>
-                <CircularProgress color="success" size={48} />
-              </div>
-            ) : displayItems.length === 0 ? (
-              <div style={{ width: '100%', textAlign: 'center', padding: '3rem 0', gridColumn: '1 / -1' }}>
-                <h2 className="text-h2">{t('cart-empty')}</h2>
-            
+        {items.length === 0 ? (
+          <div style={{ width: '100%', textAlign: 'center', padding: '3rem 0', gridColumn: '1 / -1' }}>
+            <h2 className="text-h2">{t('cart-empty')}</h2>
             <Link 
               to="/catalog" 
               className="cat-btn active" 
@@ -185,7 +113,7 @@ export default function CartPage() {
             </Link>
           </div>
         ) : (
-          displayItems.map((item) => (
+          items.map((item) => (
             <Card key={item.id} className="service-card pop-in">
               <div className="service-card__image-container">
                 <img src={item.image} alt={item.name} className="service-card__image" />
